@@ -21,6 +21,7 @@ onMounted(() => {
   <div class="titlebar">
     <div class="drag-region" data-tauri-drag-region></div>
     <p class="title">Pluton</p>
+    <img class="logo" src="~/assets/img/pluton.png" />
     <div class="controls">
       <button id="titlebar-minimize" title="minimize">
         <!-- https://api.iconify.design/mdi:window-minimize.svg -->
@@ -77,6 +78,10 @@ onMounted(() => {
   width: 100%;
 }
 
+.titlebar > .logo {
+  height: 100%;
+}
+
 .titlebar {
   height: var(--title-bar-height);
   background: #1e1e2e;
@@ -84,7 +89,7 @@ onMounted(() => {
   user-select: none;
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: space-between;
   top: 0;
   left: 0;
   right: 0;

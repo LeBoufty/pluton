@@ -13,6 +13,7 @@
   padding: 0px;
   border: 0px;
   color: #cdd6f4;
+  overflow: hidden;
 }
 
 button,
@@ -34,5 +35,6 @@ option {
   height: calc(100vh - var(--title-bar-height) - 7px);
   padding: 2px;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 </style>
