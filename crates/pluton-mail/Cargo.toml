@@ -1,0 +1,10 @@
+[package]
+name = "pluton-mail"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+lettre = { workspace = true }
+imap = { workspace = true }
+native-tls = { workspace = true }
+thiserror = { workspace = true }
