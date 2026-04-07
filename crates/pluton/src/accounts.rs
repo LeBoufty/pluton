@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use securestore::SecretsManager;
 
 use crate::mailbox::{MailboxCollection, SMTPMailbox, load_mailbox_data, save_mailbox_data};
@@ -14,7 +16,13 @@ pub struct Accounts {
 
 impl Accounts {
     pub fn new(passwords: SecretsManager) -> Self {
-        let mailboxes = load_mailbox_data(MAILBOXES_FILE).unwrap();
+        let mailboxes: MailboxCollection;
+        let loaded_data = load_mailbox_data(MAILBOXES_FILE);
+        if loaded_data.is_err() {
+            mailboxes = HashMap::new();
+        } else {
+            mailboxes = loaded_data.unwrap();
+        }
         Self {
             mailboxes,
             passwords,
