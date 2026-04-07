@@ -5,8 +5,6 @@ import { onMounted } from "vue";
 const appWindow = getCurrentWindow();
 
 onMounted(() => {
-  console.log(document.getElementById("titlebar-minimize"));
-
   document
     .getElementById("titlebar-minimize")
     ?.addEventListener("click", () => appWindow.minimize());
@@ -68,7 +66,7 @@ onMounted(() => {
 .titlebar > .drag-region {
   position: absolute;
   width: 100%;
-  height: 24px;
+  height: var(--title-bar-height);
   z-index: 5;
 }
 
@@ -80,7 +78,7 @@ onMounted(() => {
 }
 
 .titlebar {
-  height: 24px;
+  height: var(--title-bar-height);
   background: #1e1e2e;
   border-bottom: 1px solid #313244;
   user-select: none;
@@ -107,9 +105,9 @@ onMounted(() => {
   background-color: transparent;
 }
 .titlebar button:hover {
-  background: #585b70;
+  background: #313244;
 }
 .titlebar button:active {
-  background: #313244;
+  background: #45475a;
 }
 </style>

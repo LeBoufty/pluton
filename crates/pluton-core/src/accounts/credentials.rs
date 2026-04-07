@@ -1,4 +1,4 @@
 pub struct Credentials {
-  pub(super) imap: Option<String>,
-  pub(super) smtp: Option<String>,
+  pub imap: Option<String>,
+  pub smtp: Option<String>,
 }

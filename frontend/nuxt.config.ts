@@ -23,6 +23,5 @@ export default defineNuxtConfig({
   // Avoids error [unhandledRejection] EMFILE: too many open files, watch
   ignore: ["**/src-tauri/**"],
   telemetry: false,
-  modules: ["@nuxt/ui"],
   css: ["~/assets/css/main.css"],
 });

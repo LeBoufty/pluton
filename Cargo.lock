@@ -2746,6 +2746,7 @@ dependencies = [
  "tauri",
  "tauri-build",
  "tauri-plugin-log",
+ "thiserror 2.0.18",
 ]
 
 [[package]]
@@ -2757,6 +2758,7 @@ dependencies = [
  "securestore",
  "serde",
  "serde_json",
+ "thiserror 2.0.18",
 ]
 
 [[package]]
