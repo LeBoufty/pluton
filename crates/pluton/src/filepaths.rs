@@ -6,7 +6,7 @@ use std::{
 use dirs::data_local_dir;
 
 fn plutonmail_folder() -> PathBuf {
-    data_local_dir().unwrap().as_path().join("plutonmail")
+    data_local_dir().unwrap().as_path().join("pluton")
 }
 
 // ACCOUNTS
