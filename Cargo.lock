@@ -536,6 +536,8 @@ version = "0.1.0"
 dependencies = [
  "lettre",
  "securestore",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
