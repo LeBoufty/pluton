@@ -17,6 +17,9 @@ pub enum MailError {
 
   #[error("imap error: {0}")]
   ImapError(imap::Error),
+
+  #[error("lettre smtp transport error: {0}")]
+  LettreSmtpTransportError(lettre::transport::smtp::Error),
 }
 
 pub struct MailAccount<I: IncomingProtocol, O: OutgoingProtocol> {

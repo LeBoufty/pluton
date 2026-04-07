@@ -5,6 +5,7 @@ use lettre::Message;
 use crate::MailError;
 
 pub mod imap;
+pub mod smtp;
 
 pub trait IncomingProtocol {
   // mailboxes
@@ -45,5 +46,5 @@ pub trait IncomingProtocol {
 pub trait OutgoingProtocol {
   type Message;
 
-  fn send_email(&mut self, email: Message) -> Result<(), MailError>;
+  fn send_email(&mut self, email: &Message) -> Result<(), MailError>;
 }
