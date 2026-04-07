@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
 members = [
-    "crates/valium"
+    "crates/pluton"
 ]
-default-members = ["crates/valium"]
+default-members = ["crates/pluton"]
