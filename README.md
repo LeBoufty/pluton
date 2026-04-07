@@ -5,5 +5,6 @@ Soothing and snoozing mail client
 
 ```
 bun i
-bun tauri dev
+bun i -g @tauri-apps/cli@latest
+bun @tauri-apps/cli dev
 ```
