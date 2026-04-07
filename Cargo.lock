@@ -2739,6 +2739,8 @@ name = "pluton"
 version = "0.1.0"
 dependencies = [
  "log",
+ "pluton-core",
+ "securestore",
  "serde",
  "serde_json",
  "tauri",
