@@ -2,8 +2,7 @@
 resolver = "3"
 members = [
     "crates/pluton-mail",
-
-    "crates/pluton"
+    "crates/pluton-core"
 ]
 default-members = ["crates/pluton"]
 
