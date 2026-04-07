@@ -1,3 +1,5 @@
+<img src="assets/plutonfulltitle.png" alt="title" height="256"/>
+
 # pluton
 Soothing and snoozing mail client
 
