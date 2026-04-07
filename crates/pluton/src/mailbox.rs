@@ -2,6 +2,7 @@ use std::{
     collections::HashMap,
     fs::{read_to_string, write},
     io::Error,
+    path::PathBuf,
 };
 
 use serde::{Deserialize, Serialize};
@@ -15,7 +16,7 @@ pub struct SMTPMailbox {
 
 pub type MailboxCollection = HashMap<String, SMTPMailbox>;
 
-pub fn load_mailbox_data(f: &str) -> Result<MailboxCollection, Error> {
+pub fn load_mailbox_data(f: PathBuf) -> Result<MailboxCollection, Error> {
     let data = read_to_string(f);
     if data.is_err() {
         return Err(data.err().unwrap());
@@ -25,7 +26,10 @@ pub fn load_mailbox_data(f: &str) -> Result<MailboxCollection, Error> {
     Ok(collec)
 }
 
-pub fn save_mailbox_data(collection: MailboxCollection, f: &str) -> Result<(), serde_json::Error> {
+pub fn save_mailbox_data(
+    collection: MailboxCollection,
+    f: PathBuf,
+) -> Result<(), serde_json::Error> {
     let data = serde_json::to_string(&collection);
     if data.is_err() {
         return Err(data.err().unwrap());

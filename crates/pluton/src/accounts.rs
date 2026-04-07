@@ -2,9 +2,10 @@ use std::collections::HashMap;
 
 use securestore::SecretsManager;
 
-use crate::mailbox::{MailboxCollection, SMTPMailbox, load_mailbox_data, save_mailbox_data};
-
-const MAILBOXES_FILE: &str = "data/mailboxes.json";
+use crate::{
+    filepaths::mailboxes_file,
+    mailbox::{MailboxCollection, SMTPMailbox, load_mailbox_data, save_mailbox_data},
+};
 
 #[derive(Debug, Clone)]
 pub struct AccountError;
@@ -17,7 +18,7 @@ pub struct Accounts {
 impl Accounts {
     pub fn new(passwords: SecretsManager) -> Self {
         let mailboxes: MailboxCollection;
-        let loaded_data = load_mailbox_data(MAILBOXES_FILE);
+        let loaded_data = load_mailbox_data(mailboxes_file());
         if loaded_data.is_err() {
             mailboxes = HashMap::new();
         } else {
@@ -40,7 +41,7 @@ impl Accounts {
     }
 
     pub fn save(self) -> Result<(), AccountError> {
-        let mb_saved = save_mailbox_data(self.mailboxes, MAILBOXES_FILE);
+        let mb_saved = save_mailbox_data(self.mailboxes, mailboxes_file());
         let pw_saved = self.passwords.save();
         if mb_saved.is_err() || pw_saved.is_err() {
             Err(AccountError)
