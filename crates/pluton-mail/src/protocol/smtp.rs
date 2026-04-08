@@ -1,18 +1,24 @@
 //! SMTP (Simple Mail Transfer Protocol) - Outgoing
 
-use lettre::{Message, SmtpTransport, Transport, transport::smtp::authentication::Credentials};
+use lettre::{SmtpTransport, Transport, transport::smtp::authentication::Credentials};
 
-use crate::{MailError, protocol::OutgoingProtocol};
+use crate::{
+  MailError,
+  protocol::{OutgoingMessage, OutgoingProtocol},
+};
 
 pub struct SmtpOutgoing {
   mailer: SmtpTransport,
 }
 
 impl OutgoingProtocol for SmtpOutgoing {
-  type Message = Message;
+  fn send_email<M: Into<OutgoingMessage>>(&mut self, email: M) -> Result<(), MailError> {
+    match email.into() {
+      OutgoingMessage::LettreMessage(m) => {
+        self.mailer.send(&m)?;
+      }
+    }
 
-  fn send_email(&mut self, email: &Message) -> Result<(), MailError> {
-    self.mailer.send(email)?;
     Ok(())
   }
 }

@@ -21,6 +21,9 @@ pub enum MailError {
   #[error("couldn't parse mail")]
   MailParsingError,
 
+  #[error("invalid sent message type")]
+  InvalidSentMessageType,
+
   #[error(transparent)]
   NativeTLSError(#[from] native_tls::Error),
 

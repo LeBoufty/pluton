@@ -1,7 +1,5 @@
 //! all protocols that can be used
 
-use mail_parser::Message;
-
 use crate::MailResult;
 
 pub mod imap;
@@ -23,17 +21,29 @@ pub trait IncomingProtocol: Send {
     &mut self,
     mailbox: &str,
     ids: &Vec<EmailID>,
-  ) -> MailResult<Vec<Message<'static>>>;
+  ) -> MailResult<Vec<mail_parser::Message<'static>>>;
 
   // email
-  fn get_email_content(&mut self, mailbox: &str, id: &EmailID) -> MailResult<Message<'static>>;
+  fn get_email_content(
+    &mut self,
+    mailbox: &str,
+    id: &EmailID,
+  ) -> MailResult<mail_parser::Message<'static>>;
 }
 
 /// generic outgoing protocol.
 ///
 /// this implements Send so that Tauri can pass it between its threads
 pub trait OutgoingProtocol: Send {
-  type Message;
+  fn send_email<M: Into<OutgoingMessage>>(&mut self, email: M) -> MailResult<()>;
+}
 
-  fn send_email(&mut self, email: &<Self as OutgoingProtocol>::Message) -> MailResult<()>;
+pub enum OutgoingMessage {
+  LettreMessage(lettre::Message),
+}
+
+impl From<lettre::Message> for OutgoingMessage {
+  fn from(value: lettre::Message) -> Self {
+    Self::LettreMessage(value)
+  }
 }
