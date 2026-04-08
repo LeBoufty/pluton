@@ -24,6 +24,7 @@ log = "0.4"
 tauri = { version = "2.10.3", features = [] }
 tauri-plugin-log = "2"
 thiserror = { workspace = true }
+mail-parser = { workspace = true }
 securestore = { workspace = true }
 pluton-core = { path = "../pluton-core" }
 pluton-mail = { path = "../pluton-mail" }

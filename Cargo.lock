@@ -2720,6 +2720,7 @@ name = "pluton"
 version = "0.1.0"
 dependencies = [
  "log",
+ "mail-parser",
  "pluton-core",
  "pluton-mail",
  "securestore",
