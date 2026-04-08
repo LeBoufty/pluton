@@ -1,4 +1,5 @@
 <template>
+    <LoadingIcon />
     <UApp>
         <NuxtLayout>
             <NuxtPage />

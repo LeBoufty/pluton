@@ -1,6 +1,6 @@
 <template>
     <Transition>
-        <div class="loading_wrapper">
+        <div class="loading_wrapper" v-if="loading">
             <div class="system">
                 <div class="sun">
                     <img src="~/assets/img/loading/sun.png" />
@@ -12,6 +12,17 @@
         </div>
     </Transition>
 </template>
+
+<script setup lang="ts">
+const nuxtApp = useNuxtApp();
+const loading = ref(true);
+nuxtApp.hook("page:start", () => {
+    loading.value = true;
+});
+nuxtApp.hook("page:finish", () => {
+    loading.value = false;
+});
+</script>
 
 <style>
 /* repeatedly hit my head with a hammer trying to do this
