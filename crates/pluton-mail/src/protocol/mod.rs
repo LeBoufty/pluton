@@ -18,19 +18,15 @@ pub trait IncomingProtocol: Send {
   fn list_mailboxes(&mut self) -> MailResult<Vec<String>>;
 
   // emails
-  fn list_email_ids_in_mailbox<S: AsRef<str>>(&mut self, mailbox: S) -> MailResult<Vec<EmailID>>;
-  fn get_emails_headers<S: AsRef<str>>(
+  fn list_email_ids_in_mailbox(&mut self, mailbox: &str) -> MailResult<Vec<EmailID>>;
+  fn get_emails_headers(
     &mut self,
-    mailbox: S,
+    mailbox: &str,
     ids: &Vec<EmailID>,
   ) -> MailResult<Vec<Message<'static>>>;
 
   // email
-  fn get_email_content<S: AsRef<str>>(
-    &mut self,
-    mailbox: S,
-    id: &EmailID,
-  ) -> MailResult<Message<'static>>;
+  fn get_email_content(&mut self, mailbox: &str, id: &EmailID) -> MailResult<Message<'static>>;
 }
 
 /// generic outgoing protocol.

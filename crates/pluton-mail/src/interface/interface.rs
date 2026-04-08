@@ -35,6 +35,11 @@ impl<I: IncomingProtocol, O: OutgoingProtocol> MailInterfacer for MailInterface<
     Ok(())
   }
 
+  fn get_mailboxes(&mut self) -> MailResult<Vec<String>> {
+    let v = self.incoming.list_mailboxes()?;
+    Ok(v)
+  }
+
   fn get_email_headers_in_mailbox(
     &mut self,
     mailbox: &str,

@@ -1,3 +1,5 @@
+//! app state
+
 use pluton_core::{accounts::manager::AccountManager, interfaces::MailInterfaceManager};
 
 pub struct PlutonState {

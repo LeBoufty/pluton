@@ -47,7 +47,7 @@ impl IncomingProtocol for ImapIncoming {
     Ok(vec)
   }
 
-  fn list_email_ids_in_mailbox<S: AsRef<str>>(&mut self, mailbox: S) -> MailResult<Vec<EmailID>> {
+  fn list_email_ids_in_mailbox(&mut self, mailbox: &str) -> MailResult<Vec<EmailID>> {
     self.select_cached(mailbox)?;
     let set = self.session.search("ALL")?;
     let mut vec = set.iter().map(|s| *s as EmailID).collect::<Vec<EmailID>>();
@@ -56,9 +56,9 @@ impl IncomingProtocol for ImapIncoming {
     Ok(vec)
   }
 
-  fn get_emails_headers<S: AsRef<str>>(
+  fn get_emails_headers(
     &mut self,
-    mailbox: S,
+    mailbox: &str,
     ids: &Vec<EmailID>,
   ) -> MailResult<Vec<Message<'static>>> {
     self.select_cached(mailbox)?;
@@ -81,11 +81,7 @@ impl IncomingProtocol for ImapIncoming {
     Ok(parsed_messages)
   }
 
-  fn get_email_content<S: AsRef<str>>(
-    &mut self,
-    mailbox: S,
-    id: &EmailID,
-  ) -> MailResult<Message<'static>> {
+  fn get_email_content(&mut self, mailbox: &str, id: &EmailID) -> MailResult<Message<'static>> {
     self.select_cached(mailbox)?;
     let mails = self.session.fetch(&format!("{}", id), "RFC822")?;
     if let Some(mail) = mails.first() {

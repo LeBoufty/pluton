@@ -1,2 +1,5 @@
 /target
 /crates/pluton/data/secrets*
+.oc/
+.zed/
+.vscode/

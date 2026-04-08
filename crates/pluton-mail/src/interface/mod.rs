@@ -21,6 +21,7 @@ pub trait MailInterfacer: Send {
   fn update(&mut self) -> MailResult<()>;
   fn refresh(&mut self) -> MailResult<()>;
 
+  fn get_mailboxes(&mut self) -> MailResult<Vec<String>>;
   fn get_email_headers_in_mailbox(
     &mut self,
     mailbox: &str,
