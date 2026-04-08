@@ -1,8 +1,11 @@
 use pluton_core::PlutonCoreError;
+use pluton_mail::MailError;
 use thiserror::Error;
 
 pub mod accounts;
+pub mod mails;
 
+/// serialized command errors for typescript error management
 #[derive(Debug, Error)]
 pub enum CommandError {
   #[error("fatal error while trying to access app state")]
@@ -10,6 +13,9 @@ pub enum CommandError {
 
   #[error(transparent)]
   PlutonCoreError(#[from] PlutonCoreError),
+
+  #[error(transparent)]
+  PlutonMailError(#[from] MailError),
 }
 
 impl From<CommandError> for String {

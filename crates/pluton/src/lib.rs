@@ -3,6 +3,7 @@ use std::{fs::exists, sync::Mutex};
 use pluton_core::{
   accounts::manager::AccountManager,
   filepaths::{create_folders, key_file, pw_file},
+  interfaces::MailInterfaceManager,
 };
 use securestore::{KeySource, SecretsManager};
 use tauri::Manager;
@@ -39,6 +40,7 @@ pub fn run() {
   let manager = SecretsManager::load(pw_file(), key_file()).unwrap();
   let accounts = AccountManager::new(manager);
   accounts.save().unwrap();
+  let mail_interfaces = MailInterfaceManager::from_accounts(&accounts).unwrap();
 
   tauri::Builder::default()
     .setup(|app| {
@@ -48,7 +50,7 @@ pub fn run() {
             .level(log::LevelFilter::Info)
             .build(),
         )?;
-        app.manage(Mutex::new(PlutonState::new(accounts)));
+        app.manage(Mutex::new(PlutonState::new(accounts, mail_interfaces)));
       }
       Ok(())
     })

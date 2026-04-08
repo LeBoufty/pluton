@@ -54,7 +54,14 @@ impl Account {
   }
 }
 
-type AccountInnerCollection = HashMap<u64, Account>;
+/// type used through out the libs for identifiying accounts uniquely
+///
+/// rely on systemtime.
+///
+/// WARNING: this crashes if two accounts are created at the same second!
+/// TODO: fix this bullshit with uuids
+pub type AccountID = u64;
+type AccountInnerCollection = HashMap<AccountID, Account>;
 
 pub struct AccountCollection(pub AccountInnerCollection);
 

@@ -1,3 +1,5 @@
+//! SMTP (Simple Mail Transfer Protocol) - Outgoing
+
 use lettre::{Message, SmtpTransport, Transport, transport::smtp::authentication::Credentials};
 
 use crate::{MailError, protocol::OutgoingProtocol};
@@ -10,10 +12,7 @@ impl OutgoingProtocol for SmtpOutgoing {
   type Message = Message;
 
   fn send_email(&mut self, email: &Message) -> Result<(), MailError> {
-    self
-      .mailer
-      .send(email)
-      .map_err(MailError::LettreSmtpTransportError)?;
+    self.mailer.send(email)?;
     Ok(())
   }
 }
@@ -21,10 +20,7 @@ impl OutgoingProtocol for SmtpOutgoing {
 impl SmtpOutgoing {
   pub fn new(relay: &str, login: &str, password: &str) -> Result<Self, MailError> {
     let creds = Credentials::new(login.to_owned(), password.to_owned());
-    let mailer = SmtpTransport::relay(relay)
-      .map_err(MailError::LettreSmtpTransportError)?
-      .credentials(creds)
-      .build();
+    let mailer = SmtpTransport::relay(relay)?.credentials(creds).build();
     Ok(Self { mailer })
   }
 }

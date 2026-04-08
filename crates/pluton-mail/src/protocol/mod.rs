@@ -1,50 +1,43 @@
-use std::collections::{HashMap, HashSet};
+//! all protocols that can be used
 
-use lettre::Message;
+use mail_parser::Message;
 
-use crate::MailError;
+use crate::MailResult;
 
 pub mod imap;
 pub mod smtp;
 
-pub trait IncomingProtocol {
+/// identifier used for emails
+pub type EmailID = u64;
+
+/// generic incoming protocol.
+///
+/// this implements Send so that Tauri can pass it between its threads
+pub trait IncomingProtocol: Send {
   // mailboxes
-  fn current_mailbox(&self) -> Result<String, MailError>;
-  fn list_mailboxes(&mut self) -> Result<Vec<String>, MailError>;
-  fn select<S: AsRef<str>>(&mut self, mailbox: S) -> Result<(), MailError>;
-  fn examine<S: AsRef<str>>(&mut self, mailbox: S) -> Result<(), MailError>;
-  fn create<S: AsRef<str>>(&mut self, mailbox: S) -> Result<(), MailError>;
-  fn delete<S: AsRef<str>>(&mut self, mailbox: S) -> Result<(), MailError>;
-  fn rename<S: AsRef<str>>(&mut self, from: S, to: S) -> Result<(), MailError>;
-  fn subscribe<S: AsRef<str>>(&mut self, mailbox: S) -> Result<(), MailError>;
-  fn unsubscribe<S: AsRef<str>>(&mut self, mailbox: S) -> Result<(), MailError>;
-  fn subscriptions<S: AsRef<str>>(&mut self) -> Result<String, MailError>;
+  fn list_mailboxes(&mut self) -> MailResult<Vec<String>>;
+
+  // emails
+  fn list_email_ids_in_mailbox<S: AsRef<str>>(&mut self, mailbox: S) -> MailResult<Vec<EmailID>>;
+  fn get_emails_headers<S: AsRef<str>>(
+    &mut self,
+    mailbox: S,
+    ids: &Vec<EmailID>,
+  ) -> MailResult<Vec<Message<'static>>>;
 
   // email
-  fn list_emails_in_selected(&mut self) -> Result<Vec<u32>, MailError>;
-  fn get_unique(&mut self, id: u32) -> Result<String, MailError>;
-  fn get_range(&mut self, start: u32, end: u32) -> Result<HashMap<u32, String>, MailError>;
-  /// appends draft. if no draft box was selected, an error should be raised
-  fn append_draft<S: AsRef<str>, B: AsRef<u8>>(&mut self, content: B) -> Result<(), MailError>;
-  fn move_email_from_selected<S: AsRef<str>>(
+  fn get_email_content<S: AsRef<str>>(
     &mut self,
-    id: u32,
     mailbox: S,
-  ) -> Result<(), MailError>;
-  fn search<S: AsRef<str>>(&mut self, query: S) -> Result<HashSet<u32>, MailError>;
-
-  // helpers
-  fn move_email<S: AsRef<str>>(&mut self, id: u32, from: S, to: S) -> Result<(), MailError> {
-    let current = self.current_mailbox()?;
-    self.select(from)?;
-    self.move_email_from_selected(id, to)?;
-    self.select(current)?;
-    Ok(())
-  }
+    id: &EmailID,
+  ) -> MailResult<Message<'static>>;
 }
 
-pub trait OutgoingProtocol {
+/// generic outgoing protocol.
+///
+/// this implements Send so that Tauri can pass it between its threads
+pub trait OutgoingProtocol: Send {
   type Message;
 
-  fn send_email(&mut self, email: &Message) -> Result<(), MailError>;
+  fn send_email(&mut self, email: &<Self as OutgoingProtocol>::Message) -> MailResult<()>;
 }

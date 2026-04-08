@@ -1,7 +1,10 @@
+//! **MAIL PROTOCOL MANAGEMENT FOR PLUTON**
+//!
+//! all mail communication goes through here.
+
 use thiserror::Error;
 
-use crate::protocol::{IncomingProtocol, OutgoingProtocol};
-
+pub mod interface;
 pub mod protocol;
 
 #[derive(Error, Debug)]
@@ -9,20 +12,26 @@ pub enum MailError {
   #[error("no selected mailbox")]
   NoSelectedMailbox,
 
-  #[error("no mail at id {0}")]
-  NoMailAtId(u32),
+  #[error("mail not found at provided id")]
+  MailNotFound,
 
-  #[error("native tls error: {0}")]
-  NativeTLSError(native_tls::Error),
+  #[error("no mail body")]
+  NoMailBody,
 
-  #[error("imap error: {0}")]
-  ImapError(imap::Error),
+  #[error("couldn't parse mail")]
+  MailParsingError,
 
-  #[error("lettre smtp transport error: {0}")]
-  LettreSmtpTransportError(lettre::transport::smtp::Error),
+  #[error(transparent)]
+  NativeTLSError(#[from] native_tls::Error),
+
+  #[error(transparent)]
+  ImapError(#[from] imap::Error),
+
+  #[error(transparent)]
+  LettreSmtpTransportError(#[from] lettre::transport::smtp::Error),
+
+  #[error(transparent)]
+  UTF8Error(#[from] std::str::Utf8Error),
 }
 
-pub struct MailAccount<I: IncomingProtocol, O: OutgoingProtocol> {
-  pub incoming_interface: I,
-  pub outgoing_interface: O,
-}
+pub type MailResult<R> = Result<R, MailError>;

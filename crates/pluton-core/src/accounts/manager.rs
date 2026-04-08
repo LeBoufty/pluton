@@ -1,6 +1,5 @@
-use std::time::{SystemTime, UNIX_EPOCH};
-
 use securestore::SecretsManager;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::{
   PlutonCoreError, PlutonCoreResult,
@@ -15,21 +14,26 @@ pub struct AccountManager {
 
 impl AccountManager {
   pub fn new(passwords: SecretsManager) -> Self {
-    let mailboxes: AccountCollection;
+    let accounts: AccountCollection;
     let loaded_data = AccountCollection::load_from_disk(accounts_file());
     if loaded_data.is_err() {
-      mailboxes = AccountCollection::new();
+      accounts = AccountCollection::new();
     } else {
-      mailboxes = loaded_data.unwrap();
+      accounts = loaded_data.unwrap();
     }
     Self {
-      accounts: mailboxes,
+      accounts,
       passwords,
     }
   }
 
   pub fn get_accounts(&self) -> &AccountCollection {
     &self.accounts
+  }
+
+  pub fn get_password(&self, key: &str) -> PlutonCoreResult<String> {
+    let v = self.passwords.get(key)?;
+    Ok(v)
   }
 
   pub fn add(&mut self, mailbox: Account, creds: Credentials) -> PlutonCoreResult<()> {

@@ -6,5 +6,6 @@ edition = "2024"
 [dependencies]
 lettre = { workspace = true }
 imap = { workspace = true }
+mail-parser = { workspace = true }
 native-tls = { workspace = true }
 thiserror = { workspace = true }
