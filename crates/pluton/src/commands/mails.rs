@@ -12,12 +12,12 @@ use crate::{
 #[tauri::command]
 pub fn get_mailboxes_for_id(
   state: State<'_, Mutex<PlutonState>>,
-  account_id: &AccountID,
+  account_id: AccountID,
 ) -> CommandResult<Vec<String>> {
   let mut state = state.lock().map_err(|_| CommandError::InvalidMutexAccess)?;
   let interfaces = &mut state.mail_interfaces;
   let interface = interfaces
-    .get_mut(account_id)
+    .get_mut(&account_id)
     .map_err(|_| CommandError::InvalidAccountID)?;
   let mailboxes = interface
     .get_mailboxes()
@@ -28,13 +28,13 @@ pub fn get_mailboxes_for_id(
 #[tauri::command]
 pub fn get_email_headers_for_box(
   state: State<'_, Mutex<PlutonState>>,
-  account_id: &AccountID,
+  account_id: AccountID,
   mailbox: &str,
 ) -> CommandResult<Vec<(u64, Message<'static>)>> {
   let mut state = state.lock().map_err(|_| CommandError::InvalidMutexAccess)?;
   let interfaces = &mut state.mail_interfaces;
   let interface = interfaces
-    .get_mut(account_id)
+    .get_mut(&account_id)
     .map_err(|_| CommandError::InvalidAccountID)?;
   let emails = interface
     .get_email_headers_in_mailbox(mailbox)

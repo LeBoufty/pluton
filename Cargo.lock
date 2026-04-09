@@ -2038,6 +2038,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f82a3d6522697593ba4c683e0a6ee5a40fee93bc1a525e3cc6eeb3da11fd8897"
 dependencies = [
  "hashify",
+ "serde",
 ]
 
 [[package]]

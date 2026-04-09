@@ -58,6 +58,8 @@ pub fn run() {
       commands::accounts::accounts_get_all,
       commands::accounts::accounts_add,
       commands::accounts::accounts_delete,
+      commands::mails::get_mailboxes_for_id,
+      commands::mails::get_email_headers_for_box,
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
